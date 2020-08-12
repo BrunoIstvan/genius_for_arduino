@@ -1,15 +1,15 @@
-#define LED_VERDE 5
-#define LED_AMARELO 4
-#define LED_VERMELHO 3
 #define LED_AZUL 2
-#define BOTAO_VERDE 11
-#define BOTAO_AMARELO 10
-#define BOTAO_VERMELHO 9
+#define LED_VERMELHO 3
+#define LED_AMARELO 4
+#define LED_VERDE 5
 #define BOTAO_AZUL 8
+#define BOTAO_VERMELHO 9
+#define BOTAO_AMARELO 10
+#define BOTAO_VERDE 11
 #define UM_SEGUNDO 1000
-#define MEIO_SEGUNDO 500
+#define MEIO_SEGUNDO 350
 #define INDEFINIDO -1
-#define TAMANHO_SEQUENCIA 4
+#define TAMANHO_SEQUENCIA 10
 #define POTENCIOMETRO 0
 #define BUZZER 7
 
@@ -38,21 +38,21 @@ void loop() {
   
   switch(estadoAtual()) {
     case PRONTO_PROXIMA_RODADA:
-    	Serial.println("Pronto para a proxima rodada");
-    	preparaNovaRodada();
-    	break;
-   	case USUARIO_RESPONDENDO:
-    	Serial.println("Jogador respondendo");
-		processaRespostaJogador();
-    	break;
+      Serial.println("Pronto para a proxima rodada");
+      preparaNovaRodada();
+      break;
+    case USUARIO_RESPONDENDO:
+      Serial.println("Jogador respondendo");
+    processaRespostaJogador();
+      break;
     case JOGO_FINALIZADO_SUCESSO:
-      	Serial.println("Jogo finalizado com sucesso");
-    	jogoFinalizadoSucesso();
-      	break;
+        Serial.println("Jogo finalizado com sucesso");
+      jogoFinalizadoSucesso();
+        break;
     case JOGO_FINALIZADO_FALHA:
-      	Serial.println("Jogo finalizado com falha");
-    	jogoFinalizadoFalha();
-      	break;
+        Serial.println("Jogo finalizado com falha");
+      jogoFinalizadoFalha();
+        break;
   }
 
   delay(MEIO_SEGUNDO);
@@ -66,7 +66,7 @@ void preparaNovaRodada() {
   if(rodada <= TAMANHO_SEQUENCIA) {
     Serial.print("Rodada #"); 
     Serial.println(rodada);    
-  	tocaLedsRodada();
+    tocaLedsRodada();
   }
 }
 
@@ -77,22 +77,22 @@ void processaRespostaJogador() {
   if(resposta == INDEFINIDO) return;
   
   if(resposta == sequenciaLuzes[passos_respondidos]) {
-  	passos_respondidos++;
+    passos_respondidos++;
   } else {
     rodada = TAMANHO_SEQUENCIA + 2;
-   	Serial.println("Resposta errada"); 
+    Serial.println("Resposta errada"); 
   }
 }
 
 int estadoAtual() {
- 	
+  
   if(rodada <= TAMANHO_SEQUENCIA) {
     if(passos_respondidos == rodada) {
-      	return PRONTO_PROXIMA_RODADA;
+        return PRONTO_PROXIMA_RODADA;
     }
     return USUARIO_RESPONDENDO;  
   } else if (rodada == TAMANHO_SEQUENCIA + 1) {
-  	return JOGO_FINALIZADO_SUCESSO; 
+    return JOGO_FINALIZADO_SUCESSO; 
   }
   return JOGO_FINALIZADO_FALHA;
   
@@ -107,13 +107,13 @@ void tocaLedsRodada() {
 int leRespostaJogador() {
  
   if(digitalRead(BOTAO_VERDE) == LOW) {
-  	return piscaLED(LED_VERDE);
+    return piscaLED(LED_VERDE);
   } else if(digitalRead(BOTAO_AMARELO) == LOW) {
-  	return piscaLED(LED_AMARELO);
+    return piscaLED(LED_AMARELO);
   } else if(digitalRead(BOTAO_VERMELHO) == LOW) {
-  	return piscaLED(LED_VERMELHO);
+    return piscaLED(LED_VERMELHO);
   } else if(digitalRead(BOTAO_AZUL) == LOW) {
-  	return piscaLED(LED_AZUL);
+    return piscaLED(LED_AZUL);
   } else {
     return INDEFINIDO;
   }
@@ -141,7 +141,7 @@ void iniciaJogo() {
   randomSeed(jogo);
   
   for(int i = 0; i < TAMANHO_SEQUENCIA; i++) {
- 	sequenciaLuzes[i] = sorteiaNumero();    
+  sequenciaLuzes[i] = sorteiaNumero();    
   }
 }
 
